@@ -1,0 +1,18 @@
+{
+	"name": "calendar-api-serverless",
+	"version": "0.0.0",
+	"main": "index.js",
+	"description": "A Touhou related events calendar api from THBWiki",
+	"repository": "https://github.com/thwiki/calendar-api-serverless",
+	"license": "MIT",
+	"dependencies": {
+		"vercel": "^26.0.0"
+	},
+	"scripts": {
+		"setup": "npx vercel login && npx vercel link",
+		"start": "npx vercel dev",
+		"deploy": "npx vercel deploy --prod",
+		"dev": "npm run start",
+		"test": "go test ./api ./utils"
+	}
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>THBWiki Calendar Api Documentation</title>
+		<script src="https://fastly.jsdelivr.net/npm/swagger-ui-dist@3/swagger-ui-bundle.js" charset="UTF-8"></script>
+		<script src="https://fastly.jsdelivr.net/npm/swagger-ui-dist@3/swagger-ui-standalone-preset.js" charset="UTF-8"></script>
+		<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/swagger-ui-dist@3/swagger-ui.css" />
+		<style>
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			*,
+			*::before,
+			*::after {
+				box-sizing: inherit;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="swagger-ui"></div>
+		<script>
+			(function () {
+				const setAttribute = Image.prototype.setAttribute;
+				const spinnerSVG =
+					'<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="64" height="64" viewBox="0 0 128 128" fill="#e5e5e5"><g><circle cx="16" cy="64" r="16"/><circle cx="16" cy="64" r="14.344" transform="rotate(45 64 64)"/><circle cx="16" cy="64" r="12.531" transform="rotate(90 64 64)"/><circle cx="16" cy="64" r="10.75" transform="rotate(135 64 64)"/><circle cx="16" cy="64" r="10.063" transform="rotate(180 64 64)"/><circle cx="16" cy="64" r="8.063" transform="rotate(225 64 64)"/><circle cx="16" cy="64" r="6.438" transform="rotate(270 64 64)"/><circle cx="16" cy="64" r="5.375" transform="rotate(315 64 64)"/><animateTransform attributeName="transform" type="rotate" values="0 64 64;315 64 64;270 64 64;225 64 64;180 64 64;135 64 64;90 64 64;45 64 64" calcMode="discrete" dur="720ms" repeatCount="indefinite"/></g></svg>';
+				const spinner = URL.createObjectURL(new Blob([spinnerSVG], { type: "image/svg+xml" }));
+				Image.prototype.setAttribute = function (a, b) {
+					return setAttribute.call(this, a, a === "src" && typeof b === "string" && b[0] === "[" ? spinner : b);
+				};
+				const ui = SwaggerUIBundle({
+					url: new URL("/swagger.json", location.href).href,
+					dom_id: "#swagger-ui",
+					presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+					layout: "StandaloneLayout",
+					docExpansion: "full",
+				});
+			})();
+		</script>
+	</body>
+</html>

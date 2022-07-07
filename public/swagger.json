@@ -1,0 +1,95 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"description": "A Touhou related events calendar api from THBWiki ([Github](https://github.com/thwiki/calendar-api-serverless))",
+		"version": "",
+		"title": "THBWiki Calendar Api",
+		"termsOfService": "https://thwiki.cc/THBWiki:%E5%85%8D%E8%B4%A3%E5%A3%B0%E6%98%8E",
+		"contact": { "email": "arumi@thwiki.cc" },
+		"license": { "name": "MIT", "url": "https://opensource.org/licenses/MIT" }
+	},
+	"basePath": "/api/",
+	"tags": [
+		{
+			"name": "events",
+			"description": "Search for events"
+		}
+	],
+	"paths": {
+		"/events/{startDate}/{endDate}": {
+			"get": {
+				"tags": ["events"],
+				"summary": "Get events from start date to end date",
+				"description": "",
+				"consumes": [],
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "startDate",
+						"required": true,
+						"type": "string",
+						"format": "date"
+					},
+					{
+						"in": "path",
+						"name": "endDate",
+						"required": true,
+						"type": "string",
+						"format": "date"
+					}
+				],
+				"responses": {
+					"200": { "description": "Successful operation", "schema": { "$ref": "#/definitions/ApiResult" } },
+					"400": { "description": "Invalid query", "schema": { "$ref": "#/definitions/ApiError" } },
+					"503": { "description": "Service unavailable", "schema": { "$ref": "#/definitions/ApiError" } }
+				}
+			}
+		}
+	},
+	"definitions": {
+		"ApiResult": {
+			"type": "object",
+			"properties": {
+				"results": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"id": { "type": "string" },
+							"start": { "type": "integer" },
+							"end": { "type": "integer" },
+							"startStr": { "type": "string" },
+							"endStr": { "type": "string" },
+							"title": { "type": "string" },
+							"desc": { "type": "string" },
+							"url": { "type": "string" },
+							"icon": { "type": "string" },
+							"type": { "type": "array", "items": { "type": "string" } },
+							"color": { "type": "string" }
+						}
+					}
+				},
+				"version": { "type": "string" },
+				"meta": {
+					"type": "object",
+					"properties": {
+						"hash": { "type": "string" },
+						"count": { "type": "integer" },
+						"offset": { "type": "integer" },
+						"source": { "type": "string" },
+						"time": { "type": "string" }
+					}
+				}
+			}
+		},
+		"ApiError": {
+			"type": "object",
+			"properties": {
+				"error": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,25 @@
+{
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"github": {
+		"silent": true
+	},
+	"redirects": [
+		{ "source": "/api", "destination": "/" },
+		{ "source": "/api/", "destination": "/" }
+	],
+	"rewrites": [{ "source": "/api/events/:start/:end", "destination": "/api/events.go" }],
+	"headers": [
+		{
+			"source": "/events(.*)",
+			"headers": [
+				{ "key": "Access-Control-Allow-Origin", "value": "*" },
+				{ "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS" },
+				{
+					"key": "Access-Control-Allow-Headers",
+					"value": "Content-Length, Content-Type, Date"
+				}
+			]
+		}
+	],
+	"regions": ["sfo1"]
+}
