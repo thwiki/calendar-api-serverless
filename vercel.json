@@ -10,7 +10,7 @@
 	"rewrites": [{ "source": "/api/events/:start/:end", "destination": "/api/events.go" }],
 	"headers": [
 		{
-			"source": "/events(.*)",
+			"source": "/api/(.*)",
 			"headers": [
 				{ "key": "Access-Control-Allow-Origin", "value": "*" },
 				{ "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS" },
