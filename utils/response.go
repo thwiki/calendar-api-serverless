@@ -72,8 +72,8 @@ type ApiResult struct {
 
 type ApiResultEntry struct {
 	Id       string   `json:"id"`
-	Start    int      `json:"start"`
-	End      int      `json:"end"`
+	Start    int64    `json:"start"`
+	End      int64    `json:"end"`
 	StartStr string   `json:"startStr"`
 	EndStr   string   `json:"endStr"`
 	Title    string   `json:"title"`

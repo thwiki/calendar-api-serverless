@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 )
 
 var (
@@ -30,4 +31,8 @@ func SanitizeSMWDate(value string) (string, error) {
 		return SanitizeDate(value)
 	}
 	return SanitizeDate(strings.Join(parts[1:4], "-"))
+}
+
+func FormatDate(date time.Time) string {
+	return fmt.Sprintf("%04d-%02d-%02d", date.Year(), date.Month(), date.Day())
 }

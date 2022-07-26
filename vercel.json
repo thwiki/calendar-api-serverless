@@ -7,7 +7,10 @@
 		{ "source": "/api", "destination": "/" },
 		{ "source": "/api/", "destination": "/" }
 	],
-	"rewrites": [{ "source": "/api/events/:start/:end", "destination": "/api/events.go" }],
+	"rewrites": [
+		{ "source": "/api/events/:start/:end", "destination": "/api/events.go" },
+		{ "source": "/api/(.*).ics", "destination": "/api/ics.go" }
+	],
 	"headers": [
 		{
 			"source": "/api/(.*)",

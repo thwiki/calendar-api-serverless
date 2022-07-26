@@ -26,19 +26,19 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	header := w.Header()
-	header.Set("X-Content-Type-Options", "nosniff")
 	header.Set("Content-Type", "application/json; charset=utf-8")
+	header.Set("Cache-Control", "max-age="+responseMaxAge+", s-maxage="+responseSMaxAge+", public")
 
 	start, err := utils.SanitizeDate(startStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write(printError(err))
+		w.Write(utils.PrintError(err))
 		return
 	}
 	end, err := utils.SanitizeDate(endStr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write(printError(err))
+		w.Write(utils.PrintError(err))
 		return
 	}
 
@@ -46,23 +46,18 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusServiceUnavailable)
-		w.Write(printError(err))
+		w.Write(utils.PrintError(err))
 		return
 	}
 
-	header.Set("Cache-Control", "max-age="+responseMaxAge+", s-maxage="+responseSMaxAge+", public")
-	w.WriteHeader(http.StatusOK)
-	w.Write(events)
-}
+	json, err := json.Marshal(events)
 
-type ErrorResponse struct {
-	Error string `json:"error"`
-}
-
-func printError(err error) []byte {
-	response := ErrorResponse{
-		Error: err.Error(),
+	if err != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		w.Write(utils.PrintError(err))
+		return
 	}
-	errJson, _ := json.Marshal(response)
-	return errJson
+
+	w.WriteHeader(http.StatusOK)
+	w.Write(json)
 }

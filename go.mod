@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
+	github.com/arran4/golang-ical v0.0.0-20220517104411-fd89fefb0182
 	github.com/aws/aws-lambda-go v1.32.1
 	github.com/bozd4g/go-http-client v0.1.4
 	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5

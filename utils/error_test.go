@@ -1,10 +1,9 @@
-package handler
+package utils
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/thwiki/calendar-api-serverless/utils"
 )
 
 func TestPrintError(t *testing.T) {
@@ -12,7 +11,7 @@ func TestPrintError(t *testing.T) {
 	var text string
 
 	// Standard
-	err = &utils.InvalidDateError{}
-	text = string(printError(err))
+	err = &InvalidDateError{}
+	text = string(PrintError(err))
 	assert.Equal(t, "{\"error\":\""+err.Error()+"\"}", text)
 }
