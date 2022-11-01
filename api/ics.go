@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	icsMaxAge  = os.Getenv("ICS_MAX_AGE")
-	icsSMaxAge = os.Getenv("ICS_S_MAX_AGE")
+	icsMaxAge               = os.Getenv("ICS_MAX_AGE")
+	icsSMaxAge              = os.Getenv("ICS_S_MAX_AGE")
+	icsStaleWhileRevalidate = os.Getenv("ICS_STALE_WHILE_REVALIDATE")
 )
 
 func ICS(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +21,7 @@ func ICS(w http.ResponseWriter, r *http.Request) {
 	calendar, err := utils.GetICS(time.Now())
 
 	header := w.Header()
-	header.Set("Cache-Control", "max-age="+icsMaxAge+", s-maxage="+icsSMaxAge+", public")
+	header.Set("Cache-Control", "max-age="+icsMaxAge+", s-maxage="+icsSMaxAge+", stale-while-revalidate="+icsStaleWhileRevalidate+", public")
 
 	if err != nil {
 		header.Set("Content-Type", "application/json; charset=utf-8")

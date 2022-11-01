@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	responseMaxAge  = os.Getenv("RESPONSE_MAX_AGE")
-	responseSMaxAge = os.Getenv("RESPONSE_S_MAX_AGE")
+	responseMaxAge               = os.Getenv("RESPONSE_MAX_AGE")
+	responseSMaxAge              = os.Getenv("RESPONSE_S_MAX_AGE")
+	responseStaleWhileRevalidate = os.Getenv("RESPONSE_STALE_WHILE_REVALIDATE")
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +28,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	header := w.Header()
 	header.Set("Content-Type", "application/json; charset=utf-8")
-	header.Set("Cache-Control", "max-age="+responseMaxAge+", s-maxage="+responseSMaxAge+", public")
+	header.Set("Cache-Control", "max-age="+responseMaxAge+", s-maxage="+responseSMaxAge+", stale-while-revalidate="+responseStaleWhileRevalidate+", public")
 
 	start, err := utils.SanitizeDate(startStr)
 	if err != nil {
