@@ -96,7 +96,7 @@ func GetEvents(start string, end string) (events ApiResult, err error) {
 		Action:        "ask",
 		Format:        "json",
 		Formatversion: 2,
-		Query:         "[[事件开始::>" + start + "]][[事件开始::<" + end + "]]|?事件类型=type|?事件颜色=color|?事件页面=name|?事件开始=start|?事件结束=end|?事件描述=desc|?事件图标=icon",
+		Query:         "[[事件开始::>" + start + "]][[事件开始::<" + end + "]]|?事件类型=type|?事件颜色=color|?事件页面=name|?事件开始=start|?事件结束=end|?事件描述=desc|?事件图标=icon|limit=200",
 	})
 
 	if err != nil {
