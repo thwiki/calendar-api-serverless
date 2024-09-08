@@ -7,13 +7,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/PuerkitoBio/goquery"
 	ics "github.com/arran4/golang-ical"
 	client "github.com/bozd4g/go-http-client"
 )
 
 var (
 	Api        = os.Getenv("API_SOURCE")
+	ApiToken   = os.Getenv("API_TOKEN")
+	Url        = os.Getenv("URL_SOURCE")
 	ICSName    = os.Getenv("ICS_NAME")
 	ICSTZ      = os.Getenv("ICS_TZ")
 	httpClient = client.New(Api)
@@ -44,53 +45,6 @@ type ParseParameter struct {
 	Disabletoc         int    `url:"disabletoc"`
 }
 
-func ParseText(text string) (result string, err error) {
-	request, err := httpClient.GetWith("/api.php", ParseParameter{
-		Action:             "parse",
-		Format:             "json",
-		Text:               text,
-		Prop:               "text",
-		ContentModel:       "wikitext",
-		Wrapoutputclass:    "",
-		Disablelimitreport: 1,
-		Disableeditsection: 1,
-		Disabletoc:         1,
-	})
-
-	if err != nil {
-		return
-	}
-
-	response, err := httpClient.Do(request)
-	if err != nil {
-		return
-	}
-
-	var parseResult ParseResponse
-	response.Get().To(&parseResult)
-
-	if err != nil {
-		return
-	}
-
-	resultHtml := parseResult.Parse.Text.Content
-	reader := strings.NewReader(resultHtml)
-
-	doc, err := goquery.NewDocumentFromReader(reader)
-	if err != nil {
-		return
-	}
-
-	result = strings.Join(doc.Find("body>p").Map(func(i int, s *goquery.Selection) string {
-		if title, err := s.Html(); err == nil {
-			return title
-		}
-		return ""
-	}), "<br />")
-
-	return
-}
-
 func GetEvents(start string, end string) (events ApiResult, err error) {
 	request, err := httpClient.GetWith("/api.php", EventsParameter{
 		Action:        "ask",
@@ -102,6 +56,8 @@ func GetEvents(start string, end string) (events ApiResult, err error) {
 	if err != nil {
 		return
 	}
+
+	request.Header.Set("X-Api-Token", ApiToken)
 
 	response, err := httpClient.Do(request)
 	if err != nil {
@@ -159,19 +115,15 @@ func ConvertApiResult(response *SMWResponse) (result ApiResult, err error) {
 		resultEntry.Desc = strings.TrimSpace(strings.Join(entry.Printouts.Desc, " "))
 		if resultEntry.Desc != "" {
 			if strings.ContainsAny(resultEntry.Desc, "[{'}]") {
-				html, err := ParseText(resultEntry.Desc)
-				if err != nil {
-					resultEntry.Desc = SanitizeWikiText(resultEntry.Desc)
-				}
-				resultEntry.Desc = html
+				resultEntry.Desc = SanitizeWikiText(resultEntry.Desc)
 			}
 		}
 
-		resultEntry.Url = entry.Fullurl
+		resultEntry.Url = strings.Replace(entry.Fullurl, Api, Url, 1)
 
 		resultEntry.Type = entry.Printouts.Type
 		if len(entry.Printouts.Icon) > 0 {
-			resultEntry.Icon = entry.Printouts.Icon[0].Fullurl
+			resultEntry.Icon = strings.Replace(entry.Printouts.Icon[0].Fullurl, Api, Url, 1)
 		}
 		if len(entry.Printouts.Color) > 0 {
 			resultEntry.Color = entry.Printouts.Color[0]
