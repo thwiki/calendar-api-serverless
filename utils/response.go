@@ -88,7 +88,8 @@ func (r *SMWResponseResult) UnmarshalJSON(data []byte) error {
 	var m map[string]SMWResponseResultEntry
 
 	if err := json.Unmarshal(data, &m); err != nil {
-		return err
+		r.Entries = make([]SMWResponseResultEntry, 0)
+		return nil
 	}
 
 	r.Entries = make([]SMWResponseResultEntry, len(m))

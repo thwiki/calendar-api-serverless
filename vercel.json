@@ -1,15 +1,12 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
-	"github": {
-		"silent": true
-	},
 	"redirects": [
 		{ "source": "/api", "destination": "/" },
 		{ "source": "/api/", "destination": "/" }
 	],
 	"rewrites": [
 		{ "source": "/api/events/:start/:end", "destination": "/api/events.go" },
-		{ "source": "/api/(.*).ics", "destination": "/api/ics.go" }
+		{ "source": "/api/thwiki.ics", "destination": "/api/ics.go" }
 	],
 	"headers": [
 		{
